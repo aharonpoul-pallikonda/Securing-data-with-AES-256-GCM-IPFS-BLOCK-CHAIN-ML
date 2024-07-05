@@ -1,0 +1,27 @@
+Code for installing libraries:
+pip install cryptography pip install pycryptodome pip install scrypt
+Code for importing libraries
+from cryptography.fernet import Fernet from Crypto.Cipher import AES import scrypt, os, binascii
+import numpy as np
+Code for connecting to google drive:
+
+from google.colab import drive drive.mount('/content/drive')
+Code for loading the file from google drive
+File=np.loadtxt('/content/drive/MyDrive/Project/AESfile',delimiter=',',skiprows=0,dtype=str)
+
+Code for creating files and writing content::
+
+with open('password', 'wb') as pw_file:
+pw_file.write(Key)
+with open('msg', 'wb') as msg_file: msg_file.write(File)
+
+Code for reading files and storing the data::
+
+with open('password', 'rb') as pw_file: passwordFileContent = pw_file.read()
+with open('msg', 'rb') as msg_file: msgFileContent = msg_file.read()
+
+Code for encryption::
+
+def encrypt_AES_GCM(msg, password): kdfSalt = os.urandom(16)
+secretKey = scrypt.hash(password, kdfSalt, N=16384, r=8, p=1, buflen=32) aesCipher = AES.new(secretKey, AES.MODE_GCM)
+ciphertext, authTag = aesCipher.encrypt_and_digest(msg) return (kdfSalt, ciphertext, aesCipher.nonce, authTag)
