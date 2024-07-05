@@ -1,0 +1,14 @@
+Code for decryption::
+
+def decrypt_AES_GCM(encryptedMsg, password): (kdfSalt, ciphertext, nonce, authTag) = encryptedMsg
+secretKey = scrypt.hash(password, kdfSalt, N=16384, r=8, p=1, buflen=32) aesCipher = AES.new(secretKey, AES.MODE_GCM, nonce)
+plaintext = aesCipher.decrypt_and_verify(ciphertext, authTag) return plaintext
+Code for assigning contents of the file and key
+msg = msgFileContent
+password = passwordFileContent
+
+Code for decryption of file::
+
+decryptedMsg = decrypt_AES_GCM(encryptedMsg, password) print("decryptedMsg", decryptedMsg)
+Code for overwriting decrypted file
+with open('/content/drive/MyDrive/Project/AES file','wb') as writefile: writefile.write(decryptedMsg)
